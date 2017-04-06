@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+
+    </script>
+    <style>
+        body,ul,li{
+            padding:0;margin:0;list-style: none;
+        }
+
+        .canvas{
+            width:800px;height:400px;
+            position: fixed;
+            left:0;right:0;bottom: 0;
+            top:0;margin:auto;
+            border:1px solid #000;
+
+        }
+        .menu{
+            width:100%;height:30px;
+            background: #ccc;
+
+        }
+        .menu a{
+            float:left;
+            padding:0 10px;
+            height:100%;
+            line-height: 30px;
+            color:#000;
+            text-decoration: none;
+        }
+        .main{
+            width:100%;height:370px;
+        }
+        .main .left{
+            width:150px;height:100%;
+            float: left;
+            border:1px solid #ccc;
+            box-sizing: border-box;
+            text-align: center;
+            line-height: 30px;
+        }
+
+        .main .right{
+            width:650px;height:100%;
+            float: left;position: relative;
+        }
+        .main .left li{
+            cursor: pointer;
+        }
+
+        .opt{
+            display: none;
+        }
+        .opt.first{
+            display: block;
+        }
+       .menu a:first-child{
+           background: red;
+       }
+        .copy{
+            position: absolute;
+            left:0;top:0;width:100%;height:100%;
+
+        }
+        .xp{
+          width:10px;height:10px;border:1px solid #000;
+            position: absolute;
+            left:0;top:0;display: none;
+
+        }
+
+    </style>
+    <script src="jquery.js"></script>
+    <script src="shape.js"></script>
+    <script>
+        /*
+        *   1.  视觉实现   div
+        *
+        * */
+        window.onload=function(){
+            var canvas=document.getElementsByTagName("canvas")[0];
+            var cobj=canvas.getContext("2d");
+            var copy=document.getElementsByClassName("copy")[0];
+
+            /*实现菜单*/
+
+            $(".menu a").click(function(){
+                var index=$(this).index(".menu a");
+                $(".menu a").css("background","none");
+                $(this).css("background","red");
+                $(".opt").css("display","none").eq(index).css("display","block");
+            })
+
+            $(".opt li").click(function(){
+                var index=$(this).index(".opt li");
+                $(".opt li").css("background","none");
+                $(this).css("background","red");
+
+            })
+
+            var shapeObj=new shape(canvas,copy,cobj);
+
+            /*实现绘制图形的功能*/
+
+
+            $(".draw li").click(function(){
+
+                shapeObj.type=$(this).attr("data-role");
+                if(shapeObj.type=="pen"){
+                    shapeObj.pen()
+                }else if(shapeObj.type=="bian"){
+                    shapeObj.bianNum=prompt("请输入边数",5);
+                    shapeObj.draw();
+
+                }else if(shapeObj.type=="jiao"){
+                    shapeObj.jiaoNum=prompt("请输入数",5);
+                    shapeObj.draw();}
+                    else {
+                    shapeObj.draw();
+                }
+            })
+
+            /*填充的方式*/
+
+            $(".style li").click(function(){
+                var val=$(this).attr("data-role");
+                shapeObj.style=val;
+            })
+
+
+            /*颜色的处理*/
+            //change  当值发生改变并且失去焦点的时候会触发
+            $(".color li input").change(function(){
+                    shapeObj[$(this).attr("data-role")]=$(this).val();
+
+
+            })
+
+            /*线条宽度的处理*/
+
+            $(".lineW li").click(function(){
+                    shapeObj.lineWidth=$(this).attr("data-role");
+            })
+            $(".lineW input").change(function(){
+                shapeObj.lineWidth=$(this).val();
+            })
+
+            /*橡皮*/
+            var xp=$(".xp");
+
+            console.log(xp);
+
+            $(".xpOpt").click(function(){
+                shapeObj.xp(xp);
+            })
+
+
+            /*消除橡皮*/
+
+            $(".menu a:not(.xpOpt)").click(function(){
+                $(".xp").css("display","none");
+                copy.onmousemove=null;
+                copy.onmousedown=null;
+            })
+
+            $(".opt:last input")[0].oninput=function(){
+                shapeObj.xpw=$(this).val();
+                shapeObj.xph=$(this).val();
+
+                $(".xp").css({
+                    width:shapeObj.xpw,
+                    height:shapeObj.xph,
+                })
+
+            }
+
+
+
+        }
+    </script>
+</head>
+<body>
+<input type="text" id="one">
+
+  <div class="canvas">
+      <div class="menu">
+          <a href="javascript:;">文件</a>
+          <a href="javascript:;">画图</a>
+          <a href="javascript:;">类型</a>
+          <a href="javascript:;">颜色</a>
+          <a href="javascript:;">线条</a>
+          <a href="javascript:;" class="xpOpt">橡皮</a>
+      </div>
+
+      <div class="main">
+          <div class="left">
+                <ul class="opt first">
+                   <li>新建</li>
+                   <li>返回</li>
+                   <li>保存</li>
+                   <li>重置</li>
+                </ul>
+
+
+
+              <ul class="opt draw">
+                  <li data-role="line">画线</li>
+                  <li data-role="rect">矩形</li>
+                  <li data-role="arc">圆</li>
+                  <li data-role="bian">多边形</li>
+                  <li data-role="jiao">多角形</li>
+                  <li data-role="pen">钢笔</li>
+              </ul>
+
+              <ul class="opt style">
+                  <li data-role="stroke">线条</li>
+                  <li data-role="fill">填充</li>
+              </ul>
+
+              <ul class="opt color">
+                  <li>
+                      边框颜色
+                      <input type="color" name="color" data-role="strokeStyle">
+                  </li>
+                  <li>填充颜色
+                      <input type="color" name="color" data-role="fillStyle">
+                  </li>
+              </ul>
+
+
+              <ul class="opt lineW">
+                  <li data-role="1">
+                     细
+                  </li>
+                  <li data-role="5">
+                      中
+                  </li>
+                  <li data-role="10">
+                      粗
+                  </li>
+
+
+                      <input type="text" placeholder="请输入宽度">
+
+              </ul>
+
+              <ul class="opt">
+                <li>
+                    <input type="number">
+                </li>
+              </ul>
+          </div>
+
+          <div class="right">
+              <div class="xp">
+
+              </div>
+
+              <div class="copy">
+
+              </div>
+              <canvas width="650" height="370">
+
+              </canvas>
+          </div>
+      </div>
+  </div>
+</body>
+</html>
