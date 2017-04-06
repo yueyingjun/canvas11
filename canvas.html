@@ -182,6 +182,79 @@
             }
 
 
+            /*文件*/
+
+
+            $(".first li").click(function(){
+                var index=$(this).index(".first li");
+
+
+
+               if(index==0){  //新建
+
+                   if(shapeObj.historyArr.length>0){
+                        var yes=confirm("是否需要保存?");
+
+                        if(yes){
+                            location.href=canvas.toDataURL().replace("data:image/png", "data:stream/octet");
+                        }
+
+                        cobj.clearRect(0,0,canvas.width,canvas.height);
+                        shapeObj.historyArr=[];
+                   }
+
+               }else if(index==1){//返回
+                    if(shapeObj.historyArr.length==0){
+
+                        cobj.clearRect(0,0,canvas.width,canvas.height);
+                        setTimeout(function(){
+
+                            alert("没有历史记录");
+                        },300)
+
+
+
+
+                    }else{
+
+
+                            if(shapeObj.firstBack){
+
+                                if(shapeObj.historyArr.length==1){
+                                    shapeObj.historyArr.pop();
+                                    cobj.clearRect(0,0,canvas.width,canvas.height)
+
+                                }
+
+                                shapeObj.historyArr.pop();
+
+                                cobj.putImageData(shapeObj.historyArr.pop(),0,0)
+
+
+}else{
+                                cobj.putImageData(shapeObj.historyArr.pop(),0,0)
+                            }
+                            shapeObj.firstBack=false;
+
+
+
+
+                    }
+               }else if(index==2){ //保存
+
+                   location.href=canvas.toDataURL().replace("data:image/png", "data:stream/octet");
+               }else if(index==3){ //重置
+
+                   shapeObj.lineWidth=1;
+                   shapeObj.fillStyle="#000";
+                   shapeObj.strokeStyle="#000";
+                   shapeObj.style="stroke";
+                   shapeObj.type="line";
+               }
+            })
+
+
+
 
         }
     </script>

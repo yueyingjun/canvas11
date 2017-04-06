@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        div{
+            width:224px;height:70px;
+            position: relative;
+        }
+        canvas{
+            position: absolute;
+            left:0;top:0;
+        }
+    </style>
+    <script>
+        window.onload=function () {
+            var canvas=document.querySelector("canvas");
+            var cobj=canvas.getContext("2d");
+
+            var a=document.querySelector("img:first-of-type");
+            var b=document.querySelector("img:last-of-type");
+
+            //1.
+
+            cobj.drawImage(a,0,0,1125,350,0,0,224,70);
+            cobj.globalAlpha=0.7;
+            cobj.drawImage(b,0,0,70,70,90,0,70,70);
+            //2
+            var canvas2=document.createElement("canvas");
+            var div=document.querySelector("div");
+            div.appendChild(canvas2);
+            canvas2.width=224;
+            canvas2.height=70;
+            var cobj2=canvas2.getContext("2d");
+
+            cobj2.drawImage(a,0,0,1125,350,0,0,224,70);
+            cobj2.globalCompositeOperation="destination-in";
+            cobj2.drawImage(b,0,0,70,70,90,0,70,70);
+            canvas2.style.left=-90+"px";
+
+            canvas2.onmousedown=function(){
+                canvas2.onmousemove=function () {
+
+                    canvas.style.left=
+                }
+            }
+
+
+
+
+        }
+    </script>
+</head>
+<body>
+<div>
+
+<canvas width="224" height="70">
+
+</canvas>
+
+</div>
+<img src="a.jpg" hidden alt="">
+<img src="logo.png" alt="" hidden>
+</body>
+</html>

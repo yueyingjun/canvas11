@@ -16,6 +16,7 @@ function shape(canvas,copy,cobj){
     this.jiaoNum=5;
     this.xpw=10;
     this.xph=10;
+    this.firstBack=true;
 }
 shape.prototype={
 
@@ -30,6 +31,7 @@ shape.prototype={
 
         var that=this;
         that.copy.onmousedown=function(e){
+            this.firstBack=true;
             that.init();
             var startx=e.offsetX;
             var starty=e.offsetY;
