@@ -256,6 +256,57 @@
 
 
 
+
+
+            function wrap(text,initx,inity,width,height){
+                var str=text;
+                var x=initx;
+
+                for(var i =0;i<str.length;i++){
+                    cobj.fillText(str[i],initx,inity);
+                    initx+=cobj.measureText(str[i]).width;
+                    if(initx>x+width){
+                        initx=x;
+                        inity+=height;
+                    }
+
+                }
+            }
+
+            var ox,oy;
+            var flag=true;
+            $(".text").click(function(){
+                copy.onmousedown=function(e){
+                    if(!flag){
+                        return;
+                    }
+                    flag=false;
+                     ox=e.offsetX;
+                     oy=e.offsetY;
+
+
+                    $(".textarea").css("display","block").css({left:ox,top:oy});
+
+                    setTimeout(function(){
+                       $(".textarea").focus();
+                    },0)
+
+                }
+            })
+
+            var width=$(".textarea").width();
+
+            $(".textarea").blur(function(){
+                var val=$(this).val();
+                wrap(val,ox,oy,width,20);
+                $(".textarea").val("").css("display","none");
+                flag=true;
+
+            })
+
+
+
+
         }
     </script>
 </head>
@@ -270,6 +321,7 @@
           <a href="javascript:;">颜色</a>
           <a href="javascript:;">线条</a>
           <a href="javascript:;" class="xpOpt">橡皮</a>
+          <a href="javascript:;" class="text">文字</a>
       </div>
 
       <div class="main">
@@ -342,6 +394,8 @@
               <canvas width="650" height="370">
 
               </canvas>
+
+              <textarea class="textarea" cols="30" rows="10" style="position: absolute;display:none"></textarea>
           </div>
       </div>
   </div>

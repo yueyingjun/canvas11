@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <style>
+        canvas{
+            position: absolute;
+            left:0;top:0;
+        }
+        div{
+            position: relative;
+        }
+    </style>
+    <script>
+        window.onload=function(){
+            var canvas=document.getElementsByTagName("canvas")[0];
+            var cobj=canvas.getContext("2d");
+
+            var one=document.querySelector("img:nth-child(1)");
+            var two=document.querySelector("img:nth-child(2)");
+
+         /*1.  将两个图形绘制到画布当中
+
+               a.  定义验证区间
+          */
+
+         var width=224;
+         var height=70;
+
+         var sourceW=(height/1130)*1698;
+         var sourceX=(width-sourceW*2)*Math.random()+sourceW;
+         canvas.width=width;
+         canvas.height=height;
+
+         cobj.drawImage(one,0,0,1125,352,0,0,width,height);
+
+         cobj.globalCompositeOperation="destination-in";
+         cobj.drawImage(two,0,0,1698,1130,sourceX,0,sourceW,height);
+
+
+
+
+            cobj.shadowColor="rgba(0,0,0,0)";
+            cobj.shadowOffsetX=0;
+            cobj.shadowOffsetY=0;
+            cobj.shadowBlur=0;
+         var data=cobj.getImageData(sourceX,0,sourceW,height);
+
+         console.log(data);
+
+            cobj.clearRect(0,0,width,height);
+            cobj.globalCompositeOperation="source-over";
+
+            cobj.drawImage(one,0,0,1125,352,0,0,width,height);
+
+            cobj.globalAlpha=0.6;
+            cobj.drawImage(two,0,0,1698,1130,sourceX,0,sourceW,height);
+
+
+            var canvas2=document.createElement("canvas");
+
+            canvas2.width=sourceW;
+
+            canvas2.height=height;
+            var cobj2=canvas2.getContext("2d");
+            var box=document.querySelector(".box");
+            box.appendChild(canvas2);
+
+
+            cobj2.putImageData(data,0,0);
+
+
+            var mask=document.createElement("div");
+            mask.style.cssText="width:"+width+"px;height:"+height+"px;position:absolute;left:0;top:0;";
+
+            box.appendChild(mask);
+
+
+            mask.onmousedown=function(){
+                mask.onmousemove=function(e){
+                    var movex=e.offsetX;
+                    var movey=e.offsetY;
+                    var left=movex-canvas2.width/2;
+                    if(left<0){
+                        left=0;
+                    }
+                    if(left>width-sourceW){
+                        left>width-sourceW;
+                    }
+                    canvas2.style.left=(left)+"px";
+                    if(left>sourceX-2&&left<sourceX+2){
+                        alert("对比成功");
+                    }
+
+                }
+                mask.onmouseup=function(){
+                    mask.onmousemove=null;
+                    mask.onmouseup=null;
+                }
+            }
+
+
+
+        }
+    </script>
+</head>
+<body>
+<img src="c.jpg" alt="" hidden>
+<img src="zhuti.png" alt="" hidden>
+<div class="box">
+<canvas>
+    
+</canvas>
+</div>
+</body>
+</html>
