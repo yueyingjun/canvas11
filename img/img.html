@@ -82,10 +82,11 @@
 
 
             mask.onmousedown=function(){
+                var left;
                 mask.onmousemove=function(e){
                     var movex=e.offsetX;
                     var movey=e.offsetY;
-                    var left=movex-canvas2.width/2;
+                     left=movex-canvas2.width/2;
                     if(left<0){
                         left=0;
                     }
@@ -93,12 +94,15 @@
                         left>width-sourceW;
                     }
                     canvas2.style.left=(left)+"px";
-                    if(left>sourceX-2&&left<sourceX+2){
-                        alert("对比成功");
-                    }
+
 
                 }
                 mask.onmouseup=function(){
+                    if(left>sourceX-2&&left<sourceX+2){
+                        alert("对比成功");
+                    }else{
+                        canvas2.style.left=0;
+                    }
                     mask.onmousemove=null;
                     mask.onmouseup=null;
                 }
