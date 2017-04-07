@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <style>
+        canvas{
+            background:#ccc;
+        }
+
+    </style>
+    <script>
+        window.onload=function(){
+            var canvas=document.getElementsByTagName("canvas")[0];
+            var cobj=canvas.getContext("2d");
+
+            var a=document.querySelector("img");
+            cobj.drawImage(a,0,0);
+            var data=cobj.getImageData(0,0,300,150);
+
+            var r=10;
+
+            var quan=getQuan(r);
+            var width=data.width;
+            var height=data.height;
+
+            for(var i=0;i<height;i++){//i=y
+                for(var j=0;j<width;j++){//j=x
+                     data.data[width*4*i+j*4+0]=getval(j,i,0);
+                     data.data[width*4*i+j*4+1]=getval(j,i,1);
+                     data.data[width*4*i+j*4+2]=getval(j,i,2);
+
+                }
+            }
+            console.log(data);
+            cobj.putImageData(data,0,0);
+
+            function getval(x,y,index){
+                var arr = [];
+                for (var i=x-r;i<=x+r ;i++ )
+
+                {
+                    for (var j=y-r;j<=y+r ;j++ )
+                    {
+                        var newx=i;
+                        var newy=j;
+                        if(newx<0){
+                            newx=0;
+                        }
+                        if(newy<0){
+                            newy=0
+                        }
+                        if(newx>width-1){
+                            newx=width-1;
+                        }
+                        if(newy>height-1){
+                            newy=height-1;
+                        }
+
+                        arr.push(data.data[newy*width*4+newx*4+index]);
+                    }
+                }
+
+                var val=0;
+
+                for(var i=0;i<arr.length;i++){
+
+                    val+=arr[i]*quan[i];
+                }
+
+
+                return Math.round(val);
+
+
+
+            }
+
+            function getQuan(r){
+                var arr=[];
+                var sum=0;
+                for(var i=-r;i<=r;i++){
+                    for(var j=-r;j<=r;j++){
+                        var e = Math.E ;
+                        var pi = Math.PI ;
+                        var val=1/(2*pi*5*5)*Math.pow(e,-((i*i+j*j)/(2*5*5)))
+                        arr.push(val);
+                        sum+=val;
+                    }
+                }
+
+                for(var i=0;i<arr.length;i++){
+                    arr[i]=arr[i]/sum;
+                }
+
+                return arr;
+            }
+
+
+
+
+
+
+
+
+/*
+* ( 1 / (2*pi*σ^2) ) * exp( -(x^2+y^2)/(2*σ^2) )
+* */
+
+        }
+    </script>
+</head>
+<body>
+
+<img src="a.jpg" alt="" hidden>
+<canvas>
+    
+</canvas>
+
+</body>
+</html>
