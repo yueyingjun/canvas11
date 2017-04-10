@@ -9,7 +9,7 @@
     <style>
         html,body{
             width:100%;height:100%;
-            overflow: hidden;
+            ov erflow: hidden;
             padding:0;margin: 0;
         }
         canvas{
@@ -18,32 +18,85 @@
             background-color:#000;
 
         }
+
     </style>
     <script src="game.js"></script>
     <script>
-
-        window.onload=function(){
-            var canvas=document.querySelector("canvas");
-            var cobj=canvas.getContext("2d");
-            var clientw=document.documentElement.clientWidth;
-            var clienth=document.documentElement.clientHeight;
-            canvas.width=clientw;
-            canvas.height=clienth;
+        document.addEventListener("DOMContentLoaded",function(){
+            var img=document.querySelector("img");
+            /*img.onmouseover=function(){
+               img.src="imgs/demo.png";
+            }
+            */
 
 
-            var runimg=document.querySelectorAll(".run");
+            function imageLoad(imgObjs){
+                this.imgObjs=imgObjs;
+                this.urlArr=[];
+            }
+            imageLoad.prototype={
+                geturl:function(){
 
-            var gameObj=new game(canvas,cobj,runimg);
-            gameObj.play();
+                    for(var i=0;i<this.imgObjs.length;i++){
+                        this.urlArr.push(this.imgObjs[i].src);
+                    }
+                },
+
+                load:function(url,callback){
+                        var imgobj=new Image();
+                        imgobj.src=url;
+                        imgobj.onload=function(){
+                            if(callback) {
+                                callback();
+                            }
+                        }
+                },
+                loadAll:function(callback){
+                    this.geturl();
+                    var that=this;
+                    var num=1;
+                    for(var i=0;i<this.urlArr.length;i++){
+                        (function(index){
+                            that.load(that.urlArr[index],function(){
 
 
-        }
+                                that.load(that.urlArr[index]);
+                                num++;
+
+                                if(num==that.urlArr.length){
+    callback();
+
+                                }
+
+
+                            })
+                        })(i)
+
+                    }
+                }
+            }
+
+
+           var obj= new imageLoad(document.querySelectorAll("img"));
+
+            obj.loadAll(function(){
+
+            });
+
+
+
+
+        })
     </script>
 </head>
 <body>
+
+<input type="button" value="切换">
+
 <canvas>
 
 </canvas>
+
 <img src="imgs/person/run1.png" alt="" class="run" hidden>
 <img src="imgs/person/run2.png" alt="" class="run" hidden>
 <img src="imgs/person/run3.png" alt="" class="run" hidden>
