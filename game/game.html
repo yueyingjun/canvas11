@@ -24,6 +24,7 @@
     <script src="game.js"></script>
     <script src="imgload.js"></script>
     <script src="touch.js"></script>
+    <script src="hitPix.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded",function(){
 
@@ -32,10 +33,11 @@
           var clientW,clientH;
           var runimg=document.querySelectorAll(".run");
           var jumpimg=document.querySelectorAll(".jump");
+          var hinderimg=document.querySelectorAll(".hinder");
 
 
             //1. 整个游戏的对象
-            var gameObj=new game(canvas,cobj,runimg,jumpimg);
+            var gameObj=new game(canvas,cobj,runimg,jumpimg,hinderimg);
 
 
           window.onresize=function(){
@@ -50,6 +52,11 @@
                 }
 
               gameObj.person.y=canvas.height-gameObj.person.height;
+
+
+              for(var i=0;i<gameObj.hinderArr.length;i++){
+                  gameObj.hinderArr[i].y=canvas.height-gameObj.hinderArr[i].height;
+              }
 
 
 
@@ -83,6 +90,17 @@
 <img src="imgs/person/run5.png" alt="" class="run" hidden>
 <img src="imgs/person/run6.png" alt="" class="run" hidden>
 <img src="imgs/person/run7.png" alt="" class="run" hidden>
+
+
+<img src="imgs/hinder/boom.png" alt="" hidden class="hinder">
+<img src="imgs/hinder/chick.png" alt=""hidden class="hinder">
+<img src="imgs/hinder/egg.png" alt=""hidden class="hinder">
+<img src="imgs/hinder/flow.png" alt=""hidden class="hinder">
+<img src="imgs/hinder/grass.png" alt=""hidden class="hinder">
+<img src="imgs/hinder/pail.png" alt=""hidden class="hinder">
+<img src="imgs/hinder/stone.png" alt=""hidden class="hinder">
+<img src="imgs/hinder/tree.png" alt=""hidden class="hinder">
+<img src="imgs/hinder/ys.png" alt=""hidden class="hinder">
 
 
 
