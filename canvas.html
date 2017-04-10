@@ -371,7 +371,7 @@
        var data=cobj.getImageData(0,0,canvas.width,canvas.height);
 
 
-        var r=20;
+        var r=100;
         var quanzhong=getQuanzhong(r);
 
         var width=data.width;
@@ -379,11 +379,10 @@
 
         for(var i=0;i<height;i++){//i==y
             for(var j=0;j<width;j++){ //j=x
-
                 data.data[width*4*i+j*4+0]=getVal(j,i,0);
                 data.data[width*4*i+j*4+1]=getVal(j,i,1);
                 data.data[width*4*i+j*4+2]=getVal(j,i,2);
-                data.data[width*4*i+j*4+3]=255;
+                data.data[width*4*i+j*4+3]=getVal(j,i,3);
 
             }
         }
@@ -394,9 +393,9 @@
         function getVal(x,y,index){
                 var arr=[];
                 for(var i=x-r;i<x+r;i++){
-                    for(var j=y-r;j<y+r;j++){
+                    //for(var j=y-r;j<y+r;j++){
                         var newx=i;
-                        var newy=j;
+                        var newy=y;
                         if(newx<0){
                             newx=0;
                         }
@@ -410,15 +409,16 @@
                             newy=height;
                         }
                         arr.push(data.data[width*4*newy+newx*4+index]);
-                    }
+                    //}
                 }
 
                 var color=0;
                 for(var i=0;i<arr.length;i++){
                     color+=arr[i]*quanzhong[i]
+                    //color+=arr[i]
                 }
 
-                return color;
+                return Math.round(color);
         }
 
         function getQuanzhong(r){
@@ -427,11 +427,12 @@
             var e=Math.E;
             var sum=0;
             for(var x=-r;x<=r;x++){
-                    for(var y=-r;y<=r;y++){
+                    //for(var y=-r;y<=r;y++){
+                y=0;
                       var val=1/(2*pi*r*r)*Math.pow(e,-((x*x+y*y)/(2*r*r)));
                       sum+=val;
                        arr.push(val);
-                    }
+                   // }
             }
 
             for(var i=0;i<arr.length;i++){

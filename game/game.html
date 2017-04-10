@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        html,body{
+            width:100%;height:100%;
+            overflow: hidden;
+            padding:0;margin: 0;
+        }
+        canvas{
+            background: url(imgs/back/back.jpg);
+            background-repeat:repeat-x;
+            background-color:#000;
+
+        }
+    </style>
+    <script src="game.js"></script>
+    <script>
+
+        window.onload=function(){
+            var canvas=document.querySelector("canvas");
+            var cobj=canvas.getContext("2d");
+            var clientw=document.documentElement.clientWidth;
+            var clienth=document.documentElement.clientHeight;
+            canvas.width=clientw;
+            canvas.height=clienth;
+
+
+            var runimg=document.querySelectorAll(".run");
+
+            var gameObj=new game(canvas,cobj,runimg);
+            gameObj.play();
+
+
+        }
+    </script>
+</head>
+<body>
+<canvas>
+
+</canvas>
+<img src="imgs/person/run1.png" alt="" class="run" hidden>
+<img src="imgs/person/run2.png" alt="" class="run" hidden>
+<img src="imgs/person/run3.png" alt="" class="run" hidden>
+<img src="imgs/person/run4.png" alt="" class="run" hidden>
+<img src="imgs/person/run5.png" alt="" class="run" hidden>
+<img src="imgs/person/run6.png" alt="" class="run" hidden>
+<img src="imgs/person/run7.png" alt="" class="run" hidden>
+</body>
+</html>

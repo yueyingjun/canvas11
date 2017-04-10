@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        canvas{
+           background: #ccc;
+        }
+
+
+    </style>
+    <script>
+
+        window.onload=function(){
+            var canvas=document.querySelector("canvas");
+            var cobj=canvas.getContext("2d");
+
+           /*
+              粒子动画
+
+              直线
+              曲线
+              矩形
+              弧度
+
+              火焰燃烧的效果
+
+
+
+           */
+
+
+           function lizi(){
+               this.x=100;
+               this.y=200;
+               this.r=2+3*Math.random();
+               this.color="rgb(226,16,12)";
+               this.speedy=(2+3*Math.random());
+               this.life=5;
+               this.speedr=0.3;
+               this.speedl=0.3;
+               this.a=0;
+
+
+           }
+
+           lizi.prototype={
+               draw:function(){
+                   cobj.save();
+                   cobj.translate(this.x,this.y);
+                   cobj.beginPath();
+                   cobj.globalCompositeOperation="lighter";
+                   cobj.fillStyle=this.color;
+                   cobj.arc(0,0,this.r,0,2*Math.PI);
+                   cobj.fill();
+                   cobj.restore();
+               },
+
+               update:function(){
+                    this.a+=10;
+                   this.speedx=6*Math.random()-3;
+
+                   this.x+=this.speedx;
+
+
+                   console.log(Math.sin((this.a)*Math.PI/180)*20)
+                   this.r-=this.speedr;
+                   this.y-=this.speedy;
+                   this.life-=this.speedl;
+               }
+           }
+
+            var arr=[];
+           setInterval(function(){
+               cobj.clearRect(0,0,canvas.width,canvas.height);
+
+               var liziObj=new lizi();
+
+               arr.push(liziObj);
+
+               for(var i=0;i<arr.length;i++){
+                   arr[i].draw();
+                   arr[i].update();
+
+                   if(arr[i].r<0||arr[i].life<0){
+                      arr[i]=new lizi();
+                   }
+               }
+           },40)
+
+        }
+
+        /*
+        *
+        *
+        *    碰撞检测     触觉  视觉 感觉 味觉  嗅觉
+        *
+        *   //游戏的难点   计算机方面   算法方面  数学的难点
+        *
+        *   //寻路算法  深度优先  广度优先  A*
+        *
+        * */
+
+    </script>
+</head>
+<body>
+<div></div>
+<canvas width="500" height="500">
+
+</canvas>
+</body>
+</html>
