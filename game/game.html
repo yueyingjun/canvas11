@@ -9,78 +9,56 @@
     <style>
         html,body{
             width:100%;height:100%;
-            ov erflow: hidden;
+            overflow: hidden;
             padding:0;margin: 0;
         }
         canvas{
             background: url(imgs/back/back.jpg);
             background-repeat:repeat-x;
-            background-color:#000;
+            background-color:#fff;
+
 
         }
 
     </style>
     <script src="game.js"></script>
+    <script src="imgload.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded",function(){
-            var img=document.querySelector("img");
-            /*img.onmouseover=function(){
-               img.src="imgs/demo.png";
-            }
-            */
+
+          var canvas=document.querySelector("canvas");
+          var cobj=canvas.getContext("2d");
+          var clientW,clientH;
+          var runimg=document.querySelectorAll(".run");
+          var jumpimg=document.querySelectorAll(".jump");
 
 
-            function imageLoad(imgObjs){
-                this.imgObjs=imgObjs;
-                this.urlArr=[];
-            }
-            imageLoad.prototype={
-                geturl:function(){
-
-                    for(var i=0;i<this.imgObjs.length;i++){
-                        this.urlArr.push(this.imgObjs[i].src);
-                    }
-                },
-
-                load:function(url,callback){
-                        var imgobj=new Image();
-                        imgobj.src=url;
-                        imgobj.onload=function(){
-                            if(callback) {
-                                callback();
-                            }
-                        }
-                },
-                loadAll:function(callback){
-                    this.geturl();
-                    var that=this;
-                    var num=1;
-                    for(var i=0;i<this.urlArr.length;i++){
-                        (function(index){
-                            that.load(that.urlArr[index],function(){
+            //1. 整个游戏的对象
+            var gameObj=new game(canvas,cobj,runimg,jumpimg);
 
 
-                                that.load(that.urlArr[index]);
-                                num++;
-
-                                if(num==that.urlArr.length){
-    callback();
-
-                                }
-
-
-                            })
-                        })(i)
-
-                    }
+          window.onresize=function(){
+                clientW=document.documentElement.clientWidth;
+                clientH=document.documentElement.clientHeight;
+                canvas.width=clientW;
+                canvas.height=clientH;
+                if(canvas.width/1136>canvas.height/544){
+                    canvas.style.backgroundSize="contain";
+                }else{
+                    canvas.style.backgroundSize="cover";
                 }
-            }
+
+              gameObj.person.y=canvas.height-gameObj.person.height;
 
 
-           var obj= new imageLoad(document.querySelectorAll("img"));
 
-            obj.loadAll(function(){
+          }
+          window.onresize();
 
+
+           var imgloadObj= new imageLoad(document.querySelectorAll("img"));
+            imgloadObj.loadAll(function(){
+                 gameObj.play();
             });
 
 
@@ -91,12 +69,12 @@
 </head>
 <body>
 
-<input type="button" value="切换">
-
 <canvas>
 
 </canvas>
+<!--
 
+-->
 <img src="imgs/person/run1.png" alt="" class="run" hidden>
 <img src="imgs/person/run2.png" alt="" class="run" hidden>
 <img src="imgs/person/run3.png" alt="" class="run" hidden>
@@ -104,5 +82,9 @@
 <img src="imgs/person/run5.png" alt="" class="run" hidden>
 <img src="imgs/person/run6.png" alt="" class="run" hidden>
 <img src="imgs/person/run7.png" alt="" class="run" hidden>
+
+
+
+<img src="imgs/person/jump2.png" alt="" class="jump">
 </body>
 </html>
