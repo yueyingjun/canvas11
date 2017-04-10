@@ -21,7 +21,11 @@ person.prototype = {
         cobj.restore();
     },
     animate: function (num,speed) {
-           this.state=num%7;
+           if(this.status=="runimg") {
+               this.state = num % 7;
+           }else{
+               this.state=0;
+           }
            this.x+=speed;
            if(this.x>this.canvas.width/3){
                this.x=this.canvas.width/3
@@ -29,7 +33,37 @@ person.prototype = {
 
     },
     jump: function () {
+        var that=this;
+        var flag=true;
+        touch.on(this.canvas,"touchstart",function(){
 
+            if(!flag){
+                return;
+            }
+            flag=false;
+            var inita=0;
+            var speeda=10;
+            var currenty=that.y;
+            var r=100;
+            that.status="jumpimg";
+            that.state=0;
+            var t=setInterval(function(){
+                inita+=speeda;
+                if(inita>=180){
+                    that.status="runimg"
+                    clearInterval(t);
+                    that.y=currenty;
+                    flag=true;
+                }else{
+
+                    that.y=currenty- Math.sin(inita*Math.PI/180)*r;
+                }
+
+            },50)
+
+
+
+        })
     }
 }
 
@@ -41,11 +75,17 @@ function game(canvas, cobj, runimg, jumpimg) {
 
 }
 
+
+
+
+
+
 game.prototype = {
     play: function () {
         var that=this;
         var backpos=0;
         var personNum=0;
+        that.person.jump();
            setInterval(function(){
                that.cobj.clearRect(0,0,that.canvas.width,that.canvas.height);
                personNum++
